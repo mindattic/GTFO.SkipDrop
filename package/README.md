@@ -1,7 +1,10 @@
 # GTFO.SkipDrop
 
-Skips the elevator drop sequence at the start of every expedition, so you get into the level
-without holding the skip button. That's the whole mod — no settings, no other features.
+Skips the opening elevator animation and shortens the fall at the start of every expedition, so
+you get into the level as fast as the game can build it. That's the whole mod — no settings, no
+other features.
+
+The cage can't land before the level finishes generating, so the drop won't always be instant.
 
 ## Credits
 

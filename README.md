@@ -6,14 +6,27 @@ or holding the skip button. That is the entire mod: no config, no other features
 
 ## How it works
 
-One Harmony postfix on `ElevatorRide.StartPreReleaseSequence` calls the game's own
-`ElevatorRide.SkipPreReleaseSequence()`, the same thing holding the in-game skip button does.
-It also loads faster, because the game only starts building the level once that sequence ends.
+Two parts:
 
-Both methods are looked up by name at runtime (`AccessTools`), so the project builds against
+1. **Opening animation** — a postfix on `ElevatorRide.StartPreReleaseSequence` calls the game's own
+   `ElevatorRide.SkipPreReleaseSequence()`, the same thing holding the in-game skip button does.
+2. **The fall** — a prefix on `ElevatorRide.StartElevatorRide` sets `ElevatorRide.MinTimeLooping`
+   (the game's forced minimum fall time) to 0 and turns on the game's built-in dev flag
+   `Globals.Global.FastElevator`. It also zeroes the ride's fixed delays (`m_startDelay`,
+   `m_engineStartDelay`) and cuts the landing brake (`m_endDur`) to 0.1s. A postfix on
+   `StopElevatorRide` restores the fast-elevator flag, since it's game-wide, and logs
+   `Drop took N.Ns.` to `BepInEx/LogOutput.log`; a prefix on `ChangeState` logs each phase's
+   duration (`Middle` is the cage looping while the level generates).
+
+The cage can't land before the level finishes generating, so level generation time is the floor;
+on a slow machine or a big level the drop won't get down to a couple of seconds.
+
+Everything is looked up by name at runtime (`AccessTools`), so the project builds against
 BepInEx's core DLLs alone and doesn't need the game's generated interop assemblies. If a game
-update renames either method, the plugin logs an error to `BepInEx/LogOutput.log` and does
-nothing, rather than crashing the game.
+update renames any of it, the plugin logs an error and does nothing, rather than crashing the game.
+
+Multiplayer is untested. The host decides when the ride stops, so in a lobby where others don't
+have the mod, expect the drop to be gated by the slowest player.
 
 ## Credits
 
