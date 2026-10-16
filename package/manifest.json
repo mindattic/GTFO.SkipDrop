@@ -1,0 +1,9 @@
+{
+  "name": "GtfoSkipDrop",
+  "version_number": "1.0.0",
+  "website_url": "https://github.com/mindattic/GTFO.SkipDrop",
+  "description": "Skips the elevator drop sequence at the start of every expedition. Nothing else. Based on TheArchive by AuriRex.",
+  "dependencies": [
+    "BepInEx-BepInExPack_GTFO-3.2.3"
+  ]
+}
