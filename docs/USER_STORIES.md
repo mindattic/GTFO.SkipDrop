@@ -22,3 +22,4 @@ _Nothing recorded yet._
 | ID | Date | Type | Status | Summary | Ref |
 |---|---|---|---|---|---|
 | G.SD-T1 | 2026-10-16 | docs | closed | Start the permanent ticket log in the workflow database | — |
+| G.SD-T2 | 2026-10-16 | chore | closed | install.ps1 adds this repo's 15 .prose/commands stubs, AGENTS.md pointer for the shared global commands, so any LLM client finds them | mindattic-agent-standard/install.ps1 run 2026-10-16 |
