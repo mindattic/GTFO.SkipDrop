@@ -39,6 +39,7 @@ lot of other quality-of-life options, install TheArchive instead of this mod.
 
 ```
 src/GTFO.SkipDrop/    the plugin project (one file: Plugin.cs)
+tests/                GTFO.SkipDrop.Tests - NUnit, runs with plain `dotnet test`, no game needed
 package/              exactly what ships to Thunderstore / gets zipped for sharing
   manifest.json       Thunderstore package name is "GtfoSkipDrop" (no period allowed there)
   README.md           becomes the Thunderstore page
@@ -67,8 +68,18 @@ sharing or upload.
 
 ## Testing
 
-There's nothing to unit test; the only code is the patch itself. Build, launch a rundown in the
-profile, and confirm the drop is skipped and `LogOutput.log` shows `GTFO.SkipDrop v1.0.0 loaded.`
+```powershell
+dotnet test tests/GTFO.SkipDrop.Tests/GTFO.SkipDrop.Tests.csproj
+```
+
+NUnit, no game needed. The tests point the plugin's reflected members at fake `ElevatorRide` /
+`Global` types and drive the hook methods directly: timings get cut, `FastElevator` is restored
+(including after an aborted drop), and no hook ever throws into the game's own method. They still
+need the BepInEx profile from Building, since they reference its core DLLs.
+
+The Harmony patching itself only runs against the real game, so after a build also launch a
+rundown in the profile and confirm the drop is skipped and `LogOutput.log` shows
+`GTFO.SkipDrop vN.0.0 loaded.`
 
 ## Versioning
 
@@ -78,5 +89,5 @@ Thunderstore requires `manifest.json`'s `version_number` to be strict `x.y.z`, s
 
 ## Publishing to Thunderstore
 
-Still needed before upload: a 256x256 `package/icon.png`. Thunderstore rejects packages without
-one.
+`package/icon.png` (256x256, resized from `logo.png`) is the package icon; Thunderstore rejects
+packages without one.

@@ -1,5 +1,12 @@
 # Changelog
 
+## v4
+
+- Fixes the game's fast-elevator dev flag getting stuck on after a drop that was cut short (for
+  example, leaving mid-drop): the next drop now restores the original value.
+- The drop-phase logging can no longer break the elevator's state changes if it hits an error.
+- Adds a package icon.
+
 ## v3
 
 - Cuts the remaining fixed delays: no wait before the cage releases, no engine start delay, and the

@@ -15,7 +15,7 @@ public class Plugin : BasePlugin
 {
     public const string GUID = "MindAttic.GTFO.SkipDrop";
     public const string NAME = "GTFO.SkipDrop";
-    public const string VERSION = "3.0.0";
+    public const string VERSION = "4.0.0";
 
     // m_endDur is a duration the landing lerps over, so it stays just above 0 to avoid a divide-by-zero.
     private static readonly (string Field, float Value)[] RideTimings =
@@ -91,7 +91,8 @@ public class Plugin : BasePlugin
         _phase = null;
         try
         {
-            _savedFastElevator = _fastElevator.GetValue(null);
+            // A drop aborted before StopElevatorRide leaves our own `true` in place; don't save that as the original.
+            _savedFastElevator ??= _fastElevator.GetValue(null);
             _fastElevator.SetValue(null, true);
             _minTimeLooping.SetValue(null, Convert.ChangeType(0, _minTimeLooping.PropertyType));
 
@@ -110,10 +111,17 @@ public class Plugin : BasePlugin
     private static void LogPhase(object __0)
     {
         if (!_dropTimer.IsRunning) return;
-        var now = _dropTimer.Elapsed.TotalSeconds;
-        if (_phase != null) _log.LogInfo($"Drop phase {_phase}: {now - _phaseStart:0.0}s");
-        _phase = __0?.ToString();
-        _phaseStart = now;
+        try
+        {
+            var now = _dropTimer.Elapsed.TotalSeconds;
+            if (_phase != null) _log.LogInfo($"Drop phase {_phase}: {now - _phaseStart:0.0}s");
+            _phase = __0?.ToString();
+            _phaseStart = now;
+        }
+        catch (Exception e)
+        {
+            _log.LogError($"Couldn't log drop phase: {e}");
+        }
     }
 
     // Global.FastElevator is a game-wide dev flag, so it's only held on for the drop itself.
