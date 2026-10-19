@@ -25,7 +25,9 @@ Two parts:
    `m_engineStartDelay`) and cuts the landing brake (`m_endDur`) to 0.1s. A postfix on
    `StopElevatorRide` restores the fast-elevator flag, since it's game-wide, and logs
    `Drop took N.Ns.` to `BepInEx/LogOutput.log`; a prefix on `ChangeState` logs each phase's
-   duration (`Middle` is the cage looping while the level generates).
+   duration (`Middle` is the cage looping while the level generates). A drop cut short (leaving
+   mid-drop) never reaches `StopElevatorRide`, so a postfix on `ElevatorRide.Cleanup` restores
+   the flag instead, once `ElevatorRide.ElevatorRideInProgress` reads false.
 
 The cage can't land before the level finishes generating, so level generation time is the floor;
 on a slow machine or a big level the drop won't get down to a couple of seconds.
@@ -83,7 +85,8 @@ dotnet test tests/GTFO.SkipDrop.Tests/GTFO.SkipDrop.Tests.csproj
 
 NUnit, no game needed. The tests point the plugin's reflected members at fake `ElevatorRide` /
 `Global` types and drive the hook methods directly: timings get cut, `FastElevator` is restored
-(including after an aborted drop), and no hook ever throws into the game's own method. They still
+(including after an aborted drop, by the elevator's cleanup, but not during a live ride), and no
+hook ever throws into the game's own method. They still
 need the BepInEx profile from Building, since they reference its core DLLs.
 
 The Harmony patching itself only runs against the real game, so after a build also launch a

@@ -3,7 +3,8 @@
 ## v4
 
 - Fixes the game's fast-elevator dev flag getting stuck on after a drop that was cut short (for
-  example, leaving mid-drop): the next drop now restores the original value.
+  example, leaving mid-drop): it's put back as soon as the game cleans up the elevator, and a later
+  drop still restores the original value rather than the stuck one.
 - The drop-phase logging can no longer break the elevator's state changes if it hits an error.
 - Adds a package icon.
 - Adds a config file with one setting, a master switch: `[0. Mod] Enabled` (default `true`) is the

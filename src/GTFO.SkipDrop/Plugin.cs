@@ -30,6 +30,7 @@ public class Plugin : BasePlugin
     private static PropertyInfo _fastElevator = null!;
     private static PropertyInfo _minTimeLooping = null!;
     private static PropertyInfo _current = null!;
+    private static PropertyInfo _rideInProgress = null!;
     private static readonly List<PropertyInfo> _rideTimings = new();
     private static object? _savedFastElevator;
     private static readonly Stopwatch _dropTimer = new();
@@ -57,6 +58,8 @@ public class Plugin : BasePlugin
         var startRide = AccessTools.Method(ride, "StartElevatorRide");
         var stopRide = AccessTools.Method(ride, "StopElevatorRide");
         var changeState = AccessTools.Method(ride, "ChangeState");
+        var cleanup = AccessTools.Method(ride, "Cleanup");
+        _rideInProgress = AccessTools.Property(ride, "ElevatorRideInProgress");
         _skipPreRelease = AccessTools.Method(ride, "SkipPreReleaseSequence");
         _minTimeLooping = AccessTools.Property(ride, "MinTimeLooping");
         _current = AccessTools.Property(ride, "Current");
@@ -64,7 +67,7 @@ public class Plugin : BasePlugin
 
         foreach (var (field, _) in RideTimings) _rideTimings.Add(AccessTools.Property(ride, field));
 
-        if (new object?[] { startPreRelease, startRide, stopRide, changeState, _skipPreRelease, _minTimeLooping, _fastElevator, _current }
+        if (new object?[] { startPreRelease, startRide, stopRide, changeState, cleanup, _rideInProgress, _skipPreRelease, _minTimeLooping, _fastElevator, _current }
                 .Concat(_rideTimings).Any(m => m == null))
         {
             Log.LogError("Elevator members not found - game update? Drop will not be skipped.");
@@ -76,6 +79,7 @@ public class Plugin : BasePlugin
         harmony.Patch(startRide, prefix: new HarmonyMethod(typeof(Plugin), nameof(SpeedUpDrop)));
         harmony.Patch(stopRide, postfix: new HarmonyMethod(typeof(Plugin), nameof(RestoreAfterDrop)));
         harmony.Patch(changeState, prefix: new HarmonyMethod(typeof(Plugin), nameof(LogPhase)));
+        harmony.Patch(cleanup, postfix: new HarmonyMethod(typeof(Plugin), nameof(RestoreAfterAbortedDrop)));
         Log.LogInfo($"{NAME} v{VERSION} loaded.");
     }
 
@@ -149,5 +153,24 @@ public class Plugin : BasePlugin
         _savedFastElevator = null;
         if (_dropTimer.IsRunning) _log.LogInfo($"Drop took {_dropTimer.Elapsed.TotalSeconds:0.0}s.");
         _dropTimer.Reset();
+    }
+
+    // A drop cut short (leaving the lobby or the expedition ending mid-drop) never reaches
+    // StopElevatorRide, so the flag would stay on until the next drop. The elevator's own Cleanup
+    // puts it back - but only once no ride is in progress, so a cleanup during a live drop leaves it.
+    private static void RestoreAfterAbortedDrop()
+    {
+        try
+        {
+            if (_savedFastElevator == null || _rideInProgress.GetValue(null) is true) return;
+            _fastElevator.SetValue(null, _savedFastElevator);
+            _savedFastElevator = null;
+            _dropTimer.Reset();
+            _log.LogInfo("Drop was cut short - fast elevator flag restored.");
+        }
+        catch (Exception e)
+        {
+            _log.LogError($"Couldn't restore FastElevator after a cut-short drop: {e}");
+        }
     }
 }

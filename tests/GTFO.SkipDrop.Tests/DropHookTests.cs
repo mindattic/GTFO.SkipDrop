@@ -10,6 +10,7 @@ public class FakeRide
 {
     public static FakeRide? Current { get; set; }
     public static float MinTimeLooping { get; set; }
+    public static bool ElevatorRideInProgress { get; set; }
     public float m_startDelay { get; set; }
     public float m_engineStartDelay { get; set; }
     public float m_endDur { get; set; }
@@ -49,6 +50,7 @@ public class DropHookTests
         SetStatic("_fastElevator", typeof(FakeGlobal).GetProperty(nameof(FakeGlobal.FastElevator)));
         SetStatic("_minTimeLooping", typeof(FakeRide).GetProperty(nameof(FakeRide.MinTimeLooping)));
         SetStatic("_current", typeof(FakeRide).GetProperty(nameof(FakeRide.Current)));
+        SetStatic("_rideInProgress", typeof(FakeRide).GetProperty(nameof(FakeRide.ElevatorRideInProgress)));
         SetStatic("_savedFastElevator", null);
         SetStatic("_phase", null);
 
@@ -63,6 +65,7 @@ public class DropHookTests
         FakeGlobal.ThrowOnSet = false;
         FakeGlobal.FastElevator = false;
         FakeRide.MinTimeLooping = 30f;
+        FakeRide.ElevatorRideInProgress = false;
         FakeRide.Current = new FakeRide { m_startDelay = 5f, m_engineStartDelay = 3f, m_endDur = 4f };
     }
 
@@ -175,6 +178,49 @@ public class DropHookTests
         Call("SpeedUpDrop");
 
         Assert.DoesNotThrow(() => Call("LogPhase", new ThrowingState()));
+    }
+
+    [Test]
+    public void AbortedDrop_CleanupRestoresTheOriginalValue()
+    {
+        Call("SpeedUpDrop"); // aborted: StopElevatorRide never runs
+        Call("RestoreAfterAbortedDrop");
+
+        Assert.That(FakeGlobal.FastElevator, Is.False);
+        Assert.That(((System.Diagnostics.Stopwatch)GetStatic("_dropTimer")!).IsRunning, Is.False);
+    }
+
+    [Test]
+    public void Cleanup_DuringALiveRide_LeavesTheDropSpedUp()
+    {
+        Call("SpeedUpDrop");
+        FakeRide.ElevatorRideInProgress = true;
+        Call("RestoreAfterAbortedDrop");
+
+        Assert.That(FakeGlobal.FastElevator, Is.True);
+        Assert.That(((System.Diagnostics.Stopwatch)GetStatic("_dropTimer")!).IsRunning, Is.True);
+
+        FakeRide.ElevatorRideInProgress = false;
+        Call("RestoreAfterDrop");
+        Assert.That(FakeGlobal.FastElevator, Is.False);
+    }
+
+    [Test]
+    public void Cleanup_WithoutADrop_LeavesFastElevatorAlone()
+    {
+        FakeGlobal.FastElevator = true;
+
+        Assert.DoesNotThrow(() => Call("RestoreAfterAbortedDrop"));
+        Assert.That(FakeGlobal.FastElevator, Is.True);
+    }
+
+    [Test]
+    public void Cleanup_NeverThrowsIntoTheGamesCleanup()
+    {
+        Call("SpeedUpDrop");
+        FakeGlobal.ThrowOnSet = true;
+
+        Assert.DoesNotThrow(() => Call("RestoreAfterAbortedDrop"));
     }
 
     private static void Call(string method, params object?[] args)
