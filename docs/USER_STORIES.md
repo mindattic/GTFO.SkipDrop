@@ -28,3 +28,4 @@ _Nothing recorded yet._
 | G.SD-T5 | 2026-10-16 | chore | open | Clean up code and docs: remove dead code, stale comments and outdated or duplicated docs, and simplify where behaviour doesn't change (/simplify); tests stay green | user request 2026-10-16: approved repo sweep |
 | G.SD-T6 | 2026-10-16 | docs | open | Bring README.md up to date with the code as it is now (what it is, setup, usage, commands, current state), following codex-standard/README-STYLE.md; README.htm regenerated if the repo has one | user request 2026-10-16: approved repo sweep |
 | G.SD-T7 | 2026-10-16 | chore | closed | Add logo.png, icon.png, tests; Update README.md, USER_STORIES.md, CHANGELOG.md, manifest.json, Plugin.cs | — |
+| G.SD-T8 | 2026-10-18 | feature | closed | Master switch: [0. Mod] Enabled as the cfg's first entry; off means the mod loads nothing (user request) | — |
