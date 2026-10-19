@@ -40,6 +40,17 @@ public class Plugin : BasePlugin
     {
         _log = Log;
 
+        // The master switch is the cfg's first entry ("0. Mod" sorts ahead of every other section), so
+        // the mod can be turned off from its .cfg where a mod manager profile doesn't list it.
+        var enabled = Config.Bind("0. Mod", "Enabled", true,
+            "Turn the whole mod on or off. When false, the mod loads nothing: no patches, and the drop " +
+            "plays at the game's normal speed.");
+        if (!enabled.Value)
+        {
+            Log.LogInfo($"{NAME} is switched off in its config ([0. Mod] Enabled) - not loading.");
+            return;
+        }
+
         // Resolved by name so the build only needs BepInEx, not the game's generated interop assemblies.
         var ride = AccessTools.TypeByName("ElevatorRide");
         var startPreRelease = AccessTools.Method(ride, "StartPreReleaseSequence");

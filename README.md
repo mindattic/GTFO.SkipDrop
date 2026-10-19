@@ -2,7 +2,16 @@
 
 Dev repo for **GTFO.SkipDrop**, a BepInEx IL2CPP plugin for GTFO that skips the elevator drop
 sequence at the start of every expedition, so you get into the level without sitting through it
-or holding the skip button. That is the entire mod: no config, no other features.
+or holding the skip button. That is the entire mod: no other features, and the config holds only
+the on/off switch below.
+
+## Config
+
+`BepInEx/config/MindAttic.GTFO.SkipDrop.cfg`, created on first launch:
+
+| Setting | Default | What it does |
+|---|---|---|
+| `[0. Mod] Enabled` | `true` | Turn the whole mod on or off. When false, the mod loads nothing: no patches, and the drop plays at the game's normal speed. It's the file's first entry, so the mod can be switched off where a mod manager profile doesn't list it. Takes effect on restart. |
 
 ## How it works
 

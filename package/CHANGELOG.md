@@ -6,6 +6,9 @@
   example, leaving mid-drop): the next drop now restores the original value.
 - The drop-phase logging can no longer break the elevator's state changes if it hits an error.
 - Adds a package icon.
+- Adds a config file with one setting, a master switch: `[0. Mod] Enabled` (default `true`) is the
+  file's first entry, and setting it to `false` turns the whole mod off - nothing is patched and the
+  drop plays at normal speed.
 
 ## v3
 
