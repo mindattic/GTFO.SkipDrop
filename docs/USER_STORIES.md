@@ -29,3 +29,4 @@ _Nothing recorded yet._
 | G.SD-T6 | 2026-10-16 | docs | open | Bring README.md up to date with the code as it is now (what it is, setup, usage, commands, current state), following codex-standard/README-STYLE.md; README.htm regenerated if the repo has one | user request 2026-10-16: approved repo sweep |
 | G.SD-T7 | 2026-10-16 | chore | closed | Add logo.png, icon.png, tests; Update README.md, USER_STORIES.md, CHANGELOG.md, manifest.json, Plugin.cs | — |
 | G.SD-T8 | 2026-10-18 | feature | closed | Master switch: [0. Mod] Enabled as the cfg's first entry; off means the mod loads nothing (user request) | — |
+| G.SD-T9 | 2026-10-18 | fix | closed | A drop cut short (leaving or the expedition ending mid-drop) restores the fast-elevator dev flag when the elevator is cleaned up, instead of leaving it on until the next drop | cd683c2 |
