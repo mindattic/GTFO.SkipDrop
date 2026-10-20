@@ -4,7 +4,7 @@ A BepInEx IL2CPP plugin for GTFO that skips the opening elevator animation and s
 
 ![Language](https://img.shields.io/badge/language-C%23%20(.NET%206)-blue)
 ![Platform](https://img.shields.io/badge/platform-BepInEx%20IL2CPP-informational)
-![Status](https://img.shields.io/badge/status-active%20(v4)-success)
+![Status](https://img.shields.io/badge/status-active%20(v5)-success)
 
 ![GTFO SkipDrop logo: four prisoners rappelling down a shaft under the words SKIP DROP](logo.png)
 
@@ -52,7 +52,7 @@ default. The build lands straight in that profile's `BepInEx/plugins/GTFO.SkipDr
 also writes `dist/GTFO.SkipDrop-<version>.zip` for sharing or upload.
 
 Launch the game from that profile and start a rundown. You should see the drop skipped, and
-`BepInEx/LogOutput.log` should show `GTFO.SkipDrop v4.0.0 loaded.` followed by `Drop took N.Ns.`
+`BepInEx/LogOutput.log` should show `GTFO.SkipDrop v5.0.0 loaded.` followed by `Drop took N.Ns.`
 once the cage lands.
 
 ## Configuration
@@ -148,8 +148,8 @@ rundown in the profile and confirm the drop is skipped and `LogOutput.log` shows
 ## Versioning
 
 v1, v2, v3 and so on: major-only bumps, matching the convention across other MindAttic projects.
-Thunderstore requires `manifest.json`'s `version_number` to be strict `x.y.z`, so v4 is `4.0.0`.
-`package/CHANGELOG.md` headers use the short `vN` form. The current version is v4.
+Thunderstore requires `manifest.json`'s `version_number` to be strict `x.y.z`, so v5 is `5.0.0`.
+`package/CHANGELOG.md` headers use the short `vN` form. The current version is v5.
 
 ## Publishing to Thunderstore
 

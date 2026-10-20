@@ -1,5 +1,10 @@
 # Changelog
 
+## v5
+
+- The Thunderstore description now says what the mod does: it skips the opening animation and
+  shortens the drop. No change in play.
+
 ## v4
 
 - Fixes the game's fast-elevator dev flag getting stuck on after a drop that was cut short (for
