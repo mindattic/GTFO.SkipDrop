@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Diagnostics;
 using System.Reflection;
 using BepInEx.Logging;
 using NUnit.Framework;
@@ -60,7 +61,7 @@ public class DropHookTests
         timings.Add(typeof(FakeRide).GetProperty(nameof(FakeRide.m_engineStartDelay)));
         timings.Add(typeof(FakeRide).GetProperty(nameof(FakeRide.m_endDur)));
 
-        ((System.Diagnostics.Stopwatch)GetStatic("_dropTimer")!).Reset();
+        DropTimer.Reset();
 
         FakeGlobal.ThrowOnSet = false;
         FakeGlobal.FastElevator = false;
@@ -79,14 +80,6 @@ public class DropHookTests
         Assert.That(FakeRide.Current!.m_startDelay, Is.EqualTo(0f));
         Assert.That(FakeRide.Current.m_engineStartDelay, Is.EqualTo(0f));
         Assert.That(FakeRide.Current.m_endDur, Is.EqualTo(0.1f));
-    }
-
-    [Test]
-    public void SpeedUpDrop_KeepsLandingDurationAboveZero()
-    {
-        Call("SpeedUpDrop");
-
-        Assert.That(FakeRide.Current!.m_endDur, Is.GreaterThan(0f));
     }
 
     [Test]
@@ -152,7 +145,7 @@ public class DropHookTests
         Call("SpeedUpDrop");
         Call("RestoreAfterDrop");
 
-        Assert.That(((System.Diagnostics.Stopwatch)GetStatic("_dropTimer")!).IsRunning, Is.False);
+        Assert.That(DropTimer.IsRunning, Is.False);
     }
 
     [Test]
@@ -187,7 +180,7 @@ public class DropHookTests
         Call("RestoreAfterAbortedDrop");
 
         Assert.That(FakeGlobal.FastElevator, Is.False);
-        Assert.That(((System.Diagnostics.Stopwatch)GetStatic("_dropTimer")!).IsRunning, Is.False);
+        Assert.That(DropTimer.IsRunning, Is.False);
     }
 
     [Test]
@@ -198,7 +191,7 @@ public class DropHookTests
         Call("RestoreAfterAbortedDrop");
 
         Assert.That(FakeGlobal.FastElevator, Is.True);
-        Assert.That(((System.Diagnostics.Stopwatch)GetStatic("_dropTimer")!).IsRunning, Is.True);
+        Assert.That(DropTimer.IsRunning, Is.True);
 
         FakeRide.ElevatorRideInProgress = false;
         Call("RestoreAfterDrop");
@@ -234,6 +227,8 @@ public class DropHookTests
             throw e.InnerException;
         }
     }
+
+    private static Stopwatch DropTimer => (Stopwatch)GetStatic("_dropTimer")!;
 
     private static object? GetStatic(string field) => typeof(Plugin).GetField(field, Statics)!.GetValue(null);
 
