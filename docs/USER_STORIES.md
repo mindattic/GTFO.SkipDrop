@@ -31,3 +31,4 @@ _Nothing recorded yet._
 | G.SD-T8 | 2026-10-18 | feature | closed | Master switch: [0. Mod] Enabled as the cfg's first entry; off means the mod loads nothing (user request) | — |
 | G.SD-T9 | 2026-10-18 | fix | closed | A drop cut short (leaving or the expedition ending mid-drop) restores the fast-elevator dev flag when the elevator is cleaned up, instead of leaving it on until the next drop | cd683c2 |
 | G.SD-T10 | 2026-10-19 | chore | open | Convert tracked source files to LF line endings via .gitattributes, per HOUSE-LAW-13 (low priority) | — |
+| G.SD-T11 | 2026-10-20 | chore | closed | Bump GTFO.SkipDrop to v5.0.0 for release: changelog for the corrected Thunderstore description (user request) | 123ffa0 |
