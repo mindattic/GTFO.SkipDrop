@@ -6,7 +6,7 @@ layer: stories
 status: living
 updated: 2026-10-16
 ---
-<!-- GENERATED from MindAttic.Workflow/data/workflow.db by `workflow db render`. Do not edit: this file is rewritten from the database; change stories and tickets with the workflow CLI. -->
+<!-- GENERATED from MindAttic.Tickets/data/Tickets.db by `tickets db render`. Do not edit: this file is rewritten from the database; change stories and tickets with the tickets CLI. -->
 
 # GTFO.SkipDrop — User Stories
 > ✅ done (shipped & tested) · 🟡 partial · ⬜ planned. Every ✅ cites the test.
@@ -32,3 +32,4 @@ _Nothing recorded yet._
 | G.SD-T9 | 2026-10-18 | fix | closed | A drop cut short (leaving or the expedition ending mid-drop) restores the fast-elevator dev flag when the elevator is cleaned up, instead of leaving it on until the next drop | cd683c2 |
 | G.SD-T10 | 2026-10-19 | chore | open | Convert tracked source files to LF line endings via .gitattributes, per HOUSE-LAW-13 (low priority) | — |
 | G.SD-T11 | 2026-10-20 | chore | closed | Bump GTFO.SkipDrop to v5.0.0 for release: changelog for the corrected Thunderstore description (user request) | 123ffa0 |
+| G.SD-T12 | 2026-10-20 | docs | open | Publish GTFO.SkipDrop docs to GitHub Pages via the shared Toolkit DocFX pipeline: run adopt-docs-site.ps1 (README.md as home page, docs/*.md as articles, API reference only where the code builds in CI), enable Pages with build_type=workflow, set the repo homepage URL, retire tools/build-readme.ps1 and README.htm, confirm the docs Actions run is green and https://mindattic.github.io/GTFO.SkipDrop/ returns 200. Depends on MAT-T8. | — |
