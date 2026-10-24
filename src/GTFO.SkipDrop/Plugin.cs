@@ -15,7 +15,7 @@ public class Plugin : BasePlugin
 {
     public const string GUID = "MindAttic.GTFO.SkipDrop";
     public const string NAME = "GTFO.SkipDrop";
-    public const string VERSION = "5.0.0";
+    public const string VERSION = "17.0.0";
 
     // m_endDur is a duration the landing lerps over, so it stays just above 0 to avoid a divide-by-zero.
     private static readonly (string Field, float Value)[] RideTimings =

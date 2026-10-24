@@ -1,5 +1,11 @@
 # Changelog
 
+## v17
+
+- **Joins the GTFO.EZ family's `vN` versioning scheme** (previously numbered independently; last
+  independent version was v5), so a matching version number across every GTFO.* mod is easy to spot.
+  No change in play.
+
 ## v5
 
 - The Thunderstore description now says what the mod does: it skips the opening animation and
