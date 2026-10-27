@@ -1,5 +1,13 @@
 # Changelog
 
+## v18
+
+- **Bug fix:** `RestoreAfterDrop` cleared the saved `FastElevator` flag even when restoring it threw,
+  so a failed restore permanently discarded the real original value; the next drop would then save
+  the still-overridden value as "original." It now only clears the saved flag after a successful
+  restore, matching the already-correct pattern in `RestoreAfterAbortedDrop`.
+- Moves in step with the GTFO.* family's version number.
+
 ## v17
 
 - **Joins the GTFO.EZ family's `vN` versioning scheme** (previously numbered independently; last
