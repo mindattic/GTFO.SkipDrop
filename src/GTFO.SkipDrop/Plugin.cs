@@ -145,12 +145,12 @@ public class Plugin : BasePlugin
         try
         {
             if (_savedFastElevator != null) _fastElevator.SetValue(null, _savedFastElevator);
+            _savedFastElevator = null;
         }
         catch (Exception e)
         {
             _log.LogError($"Couldn't restore FastElevator: {e}");
         }
-        _savedFastElevator = null;
         if (_dropTimer.IsRunning) _log.LogInfo($"Drop took {_dropTimer.Elapsed.TotalSeconds:0.0}s.");
         _dropTimer.Reset();
     }

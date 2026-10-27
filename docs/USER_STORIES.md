@@ -36,3 +36,4 @@ _Nothing recorded yet._
 | G.SD-T13 | 2026-10-22 | docs | closed | Update USER_STORIES.md | — |
 | G.SD-T14 | 2026-10-24 | docs | closed | Update USER_STORIES.md | — |
 | G.SD-T15 | 2026-10-24 | chore | closed | Joins the GTFO.EZ family's v17 release (previously numbered independently); no functional change | package/manifest.json |
+| G.SD-T16 | 2026-10-26 | fix | closed | Bughunt: RestoreAfterDrop now only clears the saved FastElevator flag after a successful restore, so a failed SetValue no longer permanently discards the real original value | Plugin.cs |
